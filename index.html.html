@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Invitación Luciano</title>
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial;
+  background-image:url("../fondo-cars.pg.jpg"); /* img fondo pagina */
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-attachment:fixed;
+  background-position:center;
+  color:white;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+
+/* Overlay rojizo transparente */
+body::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(255,0,0,0.35); /* Rojo con transparencia */
+  z-index:-1;
+}
+
+/* SOBRE */
+.sobre{
+  width:350px;
+  cursor:pointer;
+  animation:flotar 3s infinite ease-in-out;
+}
+@keyframes flotar{
+  0%{transform:translateY(0px)}
+  50%{transform:translateY(-15px)}
+  100%{transform:translateY(0px)}
+}
+
+/* CONTENIDO */
+.contenido{
+  display:none;
+  background:rgba(0,0,0,0.75);
+  padding:30px;
+  border-radius:15px;
+  max-width:420px;
+}
+h1{ color:#FFD700; }
+#contador{ margin-top:15px; font-size:18px; color:#00FFFF; }
+
+/* VIDEO CENTRADO */
+.video-container{
+  display:flex;
+  justify-content:center;
+  margin-top:20px;
+}
+video{
+  border-radius:10px;
+  width:320px;
+}
+
+.iconos{ margin-top:20px; }
+.iconos img{
+  width:60px;
+  margin:10px;
+  cursor:pointer;
+  transition:transform 0.3s;
+}
+.iconos img:hover{ transform:scale(1.2); }
+
+/* CONFETI */
+.confeti{
+  position:fixed;
+  width:10px;
+  height:10px;
+  background-color:red;
+  top:-10px;
+  animation:caer 4s linear forwards;
+}
+@keyframes caer{
+  to{ transform:translateY(100vh) rotate(360deg); opacity:0; }
+}
+
+/* FUEGOS ARTIFICIALES */
+.fuego{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  animation:explosion 1.5s linear forwards;
+}
+@keyframes explosion{
+  0%{transform:scale(1); opacity:1}
+  100%{transform:scale(18); opacity:0}
+}
+</style>
+</head>
+<body>
+
+<!-- SOBRE -->
+<img src="../sobre.png.png" class="sobre" id="sobre" onclick="abrirSobre()">
+
+<!-- CONTENIDO -->
+<div class="contenido" id="contenido">
+  <h1>🎉 Invitación Especial 🎉</h1>
+
+  <p>Escribe tu nombre</p>
+  <input id="nombre" placeholder="Tu nombre">
+  <br>
+  <button onclick="mostrarInvitacion()">Abrir Invitación</button>
+
+  <div id="mensaje"></div>
+  <div id="contador"></div>
+
+  <!-- para centrar video -->
+  <div class="video-container">
+    <video id="video" controls style="display:none;">
+      <source src="../WhatsApp Video 2026-03-14 at 10.56.03 PM.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="iconos" id="botones" style="display:none;">
+    <a href="https://wa.me/50686436567?text=Hola%20confirmo%20mi%20asistencia%20al%20cumpleaños%20de%20Luciano" target="_blank">
+      <img src="../whatsapp.png">
+    </a>
+    <!-- Ubicacion-->
+    <a href="https://ul.waze.com/ul?place=ChIJ2YDTw5_joI8RWcd5lUwnRqw&ll=9.91794610%2C-84.05805950&navigate=yes&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location" target="_blank">
+      <img src="../waze.png">
+    </a>
+  </div>
+  <footer>
+    © Derechos reservados Andrey Miranda 2026
+  </footer>
+
+</div>
+
+<script>
+function abrirSobre(){
+  document.getElementById("sobre").style.display="none";
+  document.getElementById("contenido").style.display="block";
+  lanzarConfeti(); // Confeti al abrir
+}
+
+function mostrarInvitacion(){
+  let nombre=document.getElementById("nombre").value;
+  if(nombre==""){
+    alert("Escribe tu nombre primero");
+    return;
+  }
+
+  // Mostrar saludo con el nombre
+  document.getElementById("mensaje").innerHTML =
+    `<h2 style="color:#FFD700;">Hola ${nombre} 👋</h2><br>
+    Luciano quiere invitarte a celebrar<br>
+    su cumpleaños número <b>2</b> 🚗🎂<br><br>
+    📅 17 de Mayo<br>
+    ⏰ 12:00 MD`;
+
+  document.getElementById("video").style.display="block";
+  document.getElementById("botones").style.display="block";
+
+  iniciarConteo();
+  lanzarFuegos(); // Fuegos artificiales al mostrar invitación
+
+  // Eliminar la casilla de nombre y el botón
+  document.getElementById("nombre").style.display="none";
+  document.querySelector("button").style.display="none";
+  document.querySelector("p").style.display="none";
+}
+
+function iniciarConteo(){
+  let fechaEvento = new Date("May 17, 2026 12:00:00").getTime();
+  let intervalo = setInterval(() => {
+    let ahora = new Date().getTime();
+    let diferencia = fechaEvento - ahora;
+
+    if (diferencia <= 0) {
+      clearInterval(intervalo);
+      document.getElementById("contador").innerHTML = "🎉 ¡Ya es el cumpleaños de Luciano! 🎉";
+      return;
+    }
+
+    let dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+    let horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+    let segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+    document.getElementById("contador").innerHTML =
+      `⏳ Faltan ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos`;
+  }, 1000);
+}
+
+/* CONFETI */
+function lanzarConfeti(){
+  for(let i=0;i<100;i++){
+    let confeti=document.createElement("div");
+    confeti.className="confeti";
+    confeti.style.left=Math.random()*100+"vw";
+    confeti.style.backgroundColor=randomColor();
+    confeti.style.animationDuration=(Math.random()*3+2)+"s";
+    document.body.appendChild(confeti);
+    setTimeout(()=>confeti.remove(),4000);
+  }
+}
+
+/* FUEGOS ARTIFICIALES */
+function lanzarFuegos(){
+  for(let i=0;i<30;i++){
+    let fuego=document.createElement("div");
+    fuego.className="fuego";
+    fuego.style.left=Math.random()*100+"vw";
+    fuego.style.top=Math.random()*100+"vh";
+    fuego.style.backgroundColor=randomColor();
+    document.body.appendChild(fuego);
+    setTimeout(()=>fuego.remove(),1500);
+  }
+}
+
+function randomColor(){
+  let colores=["#FFD700","#FF4500","#00FFFF","#FF69B4","#ADFF2F","#FFFFFF"];
+  return colores[Math.floor(Math.random()*colores.length)];
+}
+</script>
+</body>
+</html>
